@@ -1,0 +1,102 @@
+{% extends 'DelivApp/base.html'%}
+{% block title %}Menu{% endblock %}
+
+{% block body %}
+{% comment %} <div class="container">
+	<h1 class="text-info mb-2">
+		<font size="6"><strong>{{rname}}</strong></font>
+	</h1>
+	<p>
+		<font size="3"><b>Info : </b><a class="text-success"><strong>{{rinfo|safe}}</strong></a>
+			<br />
+			<b>Location: </b><a class="text-success"><strong>{{rlocation}}</strong></a>
+			<br>
+			<b>Min Order:</b> <a class="text-success">&#x20b9;{{rmin}}</a>
+		</font>
+	</p>
+</div> 
+{% endcomment %}
+
+<div class="container ">
+	<h3 class="text-danger">
+		<font size="5"><strong>Menu</strong></font>
+	</h3>
+	<br>
+	<table class="table table-hover table-bordered">
+		<thead>
+			<th>Item Name</th>
+			{% comment %} <th>Category</th> {% endcomment %}
+			<th>Price</th>
+			<th>Add</th>
+		</thead>
+		{% for item in items %}
+		<tr>
+			<td>{{item.0}}</td>
+			{% comment %} <td>{{item.1}}</td> {% endcomment %}
+			<td>&#x20b9; {{item.1}}</td>
+			{% comment %} {% if item.4 == "Open" %} {% endcomment %}
+			{% if item.3 > 0 %}
+			<td>
+				<div class="form-group" style="width:40%;">
+
+					<div class="input-group-btn">
+						<button id="down" class="btn btn-default" onclick="if(document.querySelector('#itemno{{item.2}}').innerHTML>0){
+                		document.querySelector('#itemno{{item.2}}').innerHTML--;
+                		minuscounter('{{item.2}}');
+                		}">
+						<span class="btn">-</span></button>
+					</div>
+					<span id='itemno{{item.2}}'> 0 </span>
+					<div class="input-group-btn">
+						<button id="up" class="btn btn-default" onclick="if(document.querySelector('#itemno{{item.2}}').innerHTML<{{item.3}}){
+						document.querySelector('#itemno{{item.2}}').innerHTML++;
+						pluscounter('{{item.2}}');
+						}">
+						<span class="btn">+</span></button>
+					</div>
+				</div>
+			</td>
+			{% else %}
+			<td>
+				NA
+			</td>
+			{% endif %}
+			{% comment %} {% else %}
+			<td>
+				Closed
+			</td>
+			{% endif %} {% endcomment %}
+		</tr>
+		{% endfor %}
+		</tr>
+	</table>
+	<div class="container">
+		<input type="button" class="btn btn-success btn-lg pull-right" onclick="storearray();" value="Checkout" />
+	</div>
+</div>
+<br>
+<script type="text/javascript">
+
+	var cart = [];
+	function pluscounter(pk) {
+		cart.push(pk);
+		console.log(cart);
+	};
+	function minuscounter(pk) {
+		if (cart != []) {
+			var removeindex = cart.indexOf(pk);
+			cart.splice(removeindex, 1);
+		}
+		console.log(cart);
+	};
+
+	function storearray() {
+		if (cart.length === 0) {
+			alert('No items selected');
+			return false;
+		}
+		document.cookie = "cart=" + cart + ";Path=/";
+		window.location = "/checkout/";
+	};
+</script>
+{% endblock %}

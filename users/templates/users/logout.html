@@ -1,0 +1,9 @@
+{% extends "DelivApp/base.html" %}
+{% block body %}
+    <h2>You Have been Logged out</h2>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Already Have an Account? <a class="ml-2" href="{% url 'login' %}">Login in Again</a>
+        </small>
+    </div>
+{% endblock%}
